@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>换机邦-后台登录</title>
+    <link href="/assets/images/favicon.ico" rel="icon"/>
+    <link href="/assets/css/login.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="login_box">
+        <div class="login">
+            <div class="login_logo"><a href="#"><img src="/assets/images/login_logo.png" /></a></div>
+            <div class="login_name">
+                <p>后台管理系统</p>
+            </div>
+            <div style="color: red;text-align: center;">
+                <p id="error"></p>
+            </div>
+            <form method="post">
+                <input style="margin-top: 10px;" name="username" id="username" type="text" placeholder="用户名">
+                <input type="password" name="pwd" id="pwd" placeholder="密码"/>
+                <input value="登录" style="width:100%;" type="button" id="login">
+            </form>
+        </div>
+    </div>
+    <div class="copyright">杭州盛水湾科技有限公司 版权所有©2018-</div>
+
+    <script type="text/javascript" src="/utils/jquery-3.2.1.min.js"></script>
+    <%- include('footer.html') %>
+    <!-- javascripts-->
+    <script type="text/javascript" src="/operations/admin.js"></script>
+    <script type="text/javascript">
+        $('#login').click( function () {
+            admin.list.login()
+        })
+    </script>
+</body>
+</html>

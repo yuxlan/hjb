@@ -1,0 +1,76 @@
+<%- include('../header.html') %>
+<div class="main-wrap">
+
+    <div class="crumb-wrap">
+        <div class="crumb-list"><i class="icon-font"></i><a href="/carousel">首页</a><span class="crumb-step">&gt;</span><a class="crumb-name" href="/carousel">轮播图管理</a><span class="crumb-step">&gt;</span><span>编辑轮播图</span></div>
+    </div>
+    <div class="result-wrap">
+        <div class="result-content">
+            <div class="show_result">
+                <div class="show_result_inner"><img src=""><span></span></div>
+            </div>
+            <form action="" method="post" id="form" name="form" enctype="multipart/form-data">
+                <table class="insert-tab" width="100%">
+                    <tbody>
+                    <tr>
+                        <th width="120"><i class="require-red">*</i>类型：</th>
+                        <td>
+                            <select name="type" id="type" class="required">
+                                <option value="0">请选择</option>
+                                <option value="2">PC端轮播图</option>
+                                <option value="1">小程序轮播图</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="require-red">*</i>图片：</th>
+                        <td><img src="" id="show" style="width: 200px;"><span class="require-red">要求图片大小(PC端1920*600)(小程序750*428)</span><input name="file" id="upload" type="file"></td>
+                    </tr>
+                    <tr>
+                        <th>图片外部链接：</th>
+                        <td>
+                            <input class="common-text required" id="href" name="href" value="" type="text" style="width: 98%;height: 30px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>图片描述：</th>
+                        <td><textarea class="common-textarea" id="des" name="des" cols="30" style="width: 98%;" rows="10"></textarea></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td>
+                            <input class="btn btn-primary btn6 mr10" value="保存" type="button" id="edit">
+                            <input class="btn btn6" onclick="history.go(-1)" value="返回" type="button">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+
+</div>
+<!--/main-->
+</div>
+
+<!--_footer-->
+<%- include('../footer.html') %>
+<!-- javascripts-->
+<script type="text/javascript" src="/operations/carousel.js"></script>
+<script type="text/javascript">
+    $(function(){
+        'use strict'
+
+        carousel.list.getOneCarousel()
+
+        $("#upload").change(function () {
+            common.upLoad('show')
+        })
+
+        $("#edit").click(function () {
+            carousel.list.editCarousel()
+        })
+    })
+</script>
+</body>
+</html>

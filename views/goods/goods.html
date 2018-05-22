@@ -1,0 +1,178 @@
+<%- include('../header.html') %>
+<div class="main-wrap">
+
+    <div class="crumb-wrap">
+        <div class="crumb-list"><i class="icon-font"></i><a href='/carousel'>首页</a><span class="crumb-step">&gt;</span><span class="crumb-name">商品管理</span></div>
+    </div>
+    <div class="result-wrap">
+        <div class="show_result">
+            <div class="show_result_inner"><img src=""><span></span></div>
+        </div>
+        <div class="show_info">
+            <div class="show_info_inner">
+                <div>确认删除吗？</div>
+                <div>
+                    <button id="confirm">确定</button>
+                    <button id="cancel">取消</button>
+                </div>
+            </div>
+        </div>
+        <div class="result-title">
+            <div class="result-list">
+                <a href="/goods/add"><i class="icon-font"></i>添加商品</a>
+                <a id="batchDel" href="javascript:;"><i class="icon-font"></i>批量删除</a>
+            </div>
+        </div>
+        <div class="result-content">
+            <table class="result-tab" width="100%">
+                <thead>
+                <tr>
+                    <th class="tc" width="5%"><input type="checkbox" name="selectall" id="selectall"></th>
+                    <th>名称</th>
+                    <th>品牌</th>
+                    <th>简介</th>
+                    <th>原价</th>
+                    <th>换购价</th>
+                    <th>租赁价</th>
+                    <th>说明</th>
+                    <th>主图</th>
+                    <th>展示图</th>
+                    <th>详情图</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="goods">
+                </tbody>
+            </table>
+            <div class="list-page">
+                <button class="list_bottom_info_btn"><span id="count"></span> 条</button>
+                <button class="list_bottom_info_btn">第 <span id="page"></span> 页</button>
+                <button class="list_bottom_info_btn">共 <span id="allpage"></span> 页</button>
+                <button class="list_bottom_info_btn" id="previous">上一页</button>
+                <button class="list_bottom_info_btn" id="next">下一页</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/main-->
+</div>
+
+<!--_footer-->
+<%- include('../footer.html') %>
+<!-- javascripts-->
+<script type="text/javascript" src="/operations/goods.js"></script>
+<script type="text/javascript">
+    "use strict"
+
+    $(function () {
+        goods.list.getGoods('1', '10', '0')
+
+        //  批量选中的id
+        function choosed() {
+            let id_arr = []
+            $("input[name='goods']:checked").each(function() {
+                id_arr.push(parseInt($(this).val()))
+            })
+            return id_arr
+        }
+
+        //  批量删除
+        $("#batchDel").click( function () {
+            if (choosed().length <= 0) {
+                $('.show_result').css('display', 'flex')
+                $('.show_result_inner > span').html('请选择至少一条数据')
+                $(".show_result_inner > img").attr("src", '/assets/images/onFocus.gif')
+                setTimeout( function () {
+                    $('.show_result').css('display', 'none')
+                }, 1500)
+            } else {
+                $('.show_info').css('display', 'flex')
+                $('#confirm').click( function () {
+                    goods.list.delMoreGoods(choosed())
+                    $('.show_info').css('display', 'none')
+                })
+                $('#cancel').click( function () {
+                    $('.show_info').css('display', 'none')
+                })
+            }
+        })
+
+        //  全选、全不选
+        $('input[name="selectall"]').click(function(){
+            if($(this).is(':checked')){
+                $('input[name="goods"]').each(function(){
+                    $(this).prop('checked',true)
+                })
+            }else{
+                $('input[name="goods"]').each(function(){
+                    $(this).prop('checked',false)
+                })
+            }
+        })
+
+        //  下一页
+        $('#next').click(function () {
+            goods.list.getGoods(parseInt(goods.list.indexPage)+1, '10', '0')
+        })
+
+        //  上一页
+        $('#previous').click(function () {
+            goods.list.getGoods(parseInt(goods.list.indexPage)-1, '10', '0')
+        })
+    })
+</script>
+<script type="text/html" id="goods_list">
+    [% if( list.length > 0 ){ %]
+    [% for( var i=0; i< list.length; i++ ){ %]
+    <tr>
+        <td class="tc"><input name="goods" value="[%= list[i].id %]" type="checkbox" onclick="
+                            let length=$('input[name=\'goods\']:checked').length,
+                            len=$('input[name=\'goods\']').length
+
+                            if (length===len) {
+                            $('input[name=\'selectall\']').prop('checked',true)
+                            }else{
+                            $('input[name=\'selectall\']').prop('checked',false)
+                            }"></td>
+        <th>[%= list[i].name %]</th>
+        <th>[%= list[i].brand %]</th>
+        <th>[%= list[i].des %]</th>
+        <th>[%= list[i].o_price %]</th>
+        <th>[%= list[i].m_price %]</th>
+        <th>[%= list[i].l_price %]</th>
+        <th>[%= list[i].explain %]</th>
+        <td><img src="[%= list[i].img %]" width="150px"></td>
+        <td>
+            [% for( var j=0; j< list[i].showImg.split(',').length; j++ ){ %]
+                <img src="[%= list[i].showImg.split(',')[j] %]" width="90px">
+            [% } %]
+        </td>
+        <td><img src="[%= list[i].detailImg %]" width="250px"></td>
+        <td>
+            <a class="link-update" href="/goods/edit?id=[%= list[i].id %]">修改</a>
+            <a class="link-del" href="javascript:;" onclick="
+                                $('.show_info').css('display', 'flex')
+                                $('#confirm').click( function () {
+                                    goods.list.delOneGoods('[%= list[i].id %]')
+                                    $('.show_info').css('display', 'none')
+                                })
+                                $('#cancel').click( function () {
+                                    $('.show_info').css('display', 'none')
+                                })
+                            ">删除</a>
+        </td>
+    </tr>
+    [% } %]
+    [% } %]
+</script>
+<script type="text/html" id="goods_count">
+    [%= count %]
+</script>
+<script type="text/html" id="goods_page">
+    [%= page %]
+</script>
+<script type="text/html" id="goods_allpage">
+    [%= allPage %]
+</script>
+</body>
+</html>

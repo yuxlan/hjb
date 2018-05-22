@@ -1,0 +1,206 @@
+<%- include('../header.html') %>
+<div class="main-wrap">
+
+    <div class="crumb-wrap">
+        <div class="crumb-list"><i class="icon-font"></i><a href="/carousel">首页</a><span class="crumb-step">&gt;</span><a class="crumb-name" href="/goods">商品管理</a><span class="crumb-step">&gt;</span><span>添加商品</span></div>
+    </div>
+    <div class="result-wrap">
+        <div class="result-content">
+            <div class="show_result">
+                <div class="show_result_inner"><img src=""><span></span></div>
+            </div>
+            <form action="" method="post" id="form" name="form" enctype="multipart/form-data">
+                <table class="insert-tab" width="100%">
+                    <tbody>
+                    <tr>
+                        <th width="200"><i class="require-red">*</i>品牌：</th>
+                        <td>
+                            <select name="bandId" id="bandId" class="required">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="require-red">*</i>商品名称(不超过50字)：</th>
+                        <td>
+                            <input class="common-text required" id="name" name="name" value="" type="text" style="width: 98%;height: 30px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>商品简介：</th>
+                        <td><textarea class="common-textarea" id="des" name="des" cols="30" style="width: 98%;" rows="10"></textarea></td>
+                    </tr>
+                    <tr>
+                        <th><i class="require-red">*</i>原价：</th>
+                        <td>
+                            <input class="common-text required" id="oprice" name="oprice" value="" type="text" style="width: 98%;height: 30px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>最低换购价：</th>
+                        <td>
+                            <input class="common-text required" id="mprice" name="mprice" value="" type="text" style="width: 98%;height: 30px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>租赁价：</th>
+                        <td>
+                            <input class="common-text required" id="lprice" name="lprice" value="" type="text" style="width: 98%;height: 30px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>商品说明：</th>
+                        <td><textarea class="common-textarea" id="explain" name="explain" cols="30" style="width: 98%;" rows="10"></textarea></td>
+                    </tr>
+                    <tr>
+                        <th><i class="require-red">*</i>商品主图：</th>
+                        <td><img src="" id="show" style="width: 200px;"><span class="require-red">要求图片大小(750*750)</span><input name="file" id="upload" type="file"></td>
+                    </tr>
+                    <tr>
+                        <th>商品展示图(大于等于1张)：</th>
+                        <td><span class="imgCon"></span><span class="require-red">要求图片大小(750*658)</span><input name="file" id="upload1" type="file" multiple="multiple"></td>
+                    </tr>
+                    <tr>
+                        <th>商品详情图：</th>
+                        <td><img src="" id="show2" style="width: 200px;"><span class="require-red">要求图片大小(750*随意)</span><input name="file" id="upload2" type="file"></td>
+                    </tr>
+                    <tr>
+                        <th>商品详情：</th>
+                        <td><textarea class="common-textarea" id="detail" name="detail" cols="30" style="width: 99%;" rows="10"></textarea></td>
+                    </tr>
+                    <tr>
+                        <th>手机类型(可多选)：</th>
+                        <td class="add_choose">
+                            <span><input type="checkbox" name="tomp" value="折叠式">折叠式</span>
+                            <span><input type="checkbox" name="tomp" value="直立式">直立式</span>
+                            <span><input type="checkbox" name="tomp" value="滑盖式">滑盖式</span>
+                            <span><input type="checkbox" name="tomp" value="旋转式">旋转式</span>
+                            <span><input type="checkbox" name="tomp" value="智能手机">智能手机</span>
+                            <span><input type="checkbox" name="tomp" value="非智能手机">非智能手机</span>
+                            <span><input type="checkbox" name="tomp" value="时尚手机">时尚手机</span>
+                            <span><input type="checkbox" name="tomp" value="商务手机">商务手机</span>
+                            <span><input type="checkbox" name="tomp" value="拍照手机">拍照手机</span>
+                            <span><input type="checkbox" name="tomp" value="音乐手机">音乐手机</span>
+                            <span><input type="checkbox" name="tomp" value="3G手机">3G手机</span>
+                            <span><input type="checkbox" name="tomp" value="4G手机">4G手机</span>
+                            <span><input type="checkbox" name="tomp" value="GSM手机">GSM手机</span>
+                            <span><input type="checkbox" name="tomp" value="CDMA手机">CDMA手机</span>
+                            <span><input type="checkbox" name="tomp" value="其它">其它</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>触摸屏类型(可多选)：</th>
+                        <td class="add_choose">
+                            <span><input type="checkbox" name="tst" value="电阻触屏">电阻触屏</span>
+                            <span><input type="checkbox" name="tst" value="电容触屏">电容触屏</span>
+                            <span><input type="checkbox" name="tst" value="单点触摸">单点触摸</span>
+                            <span><input type="checkbox" name="tst" value="多点触摸">多点触摸</span>
+                            <span><input type="checkbox" name="tst" value="其它">其它</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>主屏尺寸：</th>
+                        <td>
+                            <input class="common-text required" id="mss" name="mss" value="" type="text" style="width: 98%;height: 30px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>屏幕材质：</th>
+                        <td class="add_choose">
+                            <span><input type="checkbox" name="msm" value="STN屏幕">STN屏幕</span>
+                            <span><input type="checkbox" name="msm" value="TFT屏幕">TFT屏幕</span>
+                            <span><input type="checkbox" name="msm" value="TFD屏幕(薄膜二极管半透式液晶显示屏)">TFD屏幕(薄膜二极管半透式液晶显示屏)</span>
+                            <span><input type="checkbox" name="msm" value="UFB屏幕(液晶显示屏)">UFB屏幕(液晶显示屏)</span>
+                            <span><input type="checkbox" name="msm" value="OLED屏幕(有机发光显示器)">OLED屏幕(有机发光显示器)</span>
+                            <span><input type="checkbox" name="msm" value="AMOLED">AMOLED</span>
+                            <span><input type="checkbox" name="msm" value="ASV">ASV</span>
+                            <span><input type="checkbox" name="msm" value="IPS硬屏">IPS硬屏</span>
+                            <span><input type="checkbox" name="msm" value="SLCD">SLCD</span>
+                            <span><input type="checkbox" name="msm" value="其它">其它</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>主屏分辨率：</th>
+                        <td>
+                            <input class="common-text required" id="msr" name="msr" value="" type="text" style="width: 98%;height: 30px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>屏幕像素密度：</th>
+                        <td>
+                            <input class="common-text required" id="spd" name="spd" value="" type="text" style="width: 98%;height: 30px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>窄边框宽度：</th>
+                        <td>
+                            <input class="common-text required" id="nb" name="nb" value="" type="text" style="width: 98%;height: 30px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>屏幕占比：</th>
+                        <td>
+                            <input class="common-text required" id="sor" name="sor" value="" type="text" style="width: 98%;height: 30px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>其它屏幕参数：</th>
+                        <td><textarea class="common-textarea" id="osp" name="osp" cols="30" style="width: 98%;" rows="10"></textarea></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td>
+                            <input class="btn btn-primary btn6 mr10" value="添加" type="button" id="add">
+                            <input class="btn btn6" onclick="history.go(-1)" value="返回" type="button">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+
+</div>
+<!--/main-->
+</div>
+
+<!--_footer-->
+<%- include('../footer.html') %>
+<!-- javascripts-->
+<script type="text/javascript" src="/operations/goods.js"></script>
+<script type="text/javascript" src="/utils/ueditor/1.4.3/ueditor.config.js"></script>
+<script type="text/javascript" src="/utils/ueditor/1.4.3/ueditor.all.min.js"></script>
+<script type="text/javascript" src="/utils/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+    $(function(){
+        'use strict'
+
+        let editor = new UE.ui.Editor()
+        editor.render("detail")
+
+        goods.list.getBrand()
+
+        $("#upload").change(function () {
+            common.upLoad('show')
+        })
+
+        $("#upload2").change(function () {
+            common.upLoad('show2')
+        })
+
+        $("#upload1").change(function() {
+            var img_div = $(".imgCon")
+            common.upLoads(img_div, 'show1', removeImg)
+        })
+
+
+        $("#add").click(function () {
+            goods.list.addGoods()
+        })
+    })
+
+    function removeImg(r){
+        $(r).parent().remove()
+    }
+</script>
+</body>
+</html>

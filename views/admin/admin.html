@@ -1,0 +1,158 @@
+<%- include('../header.html') %>
+<div class="main-wrap">
+
+    <div class="crumb-wrap">
+        <div class="crumb-list"><i class="icon-font"></i><a href='/'>首页</a><span class="crumb-step">&gt;</span><span class="crumb-name">管理员管理</span></div>
+    </div>
+    <div class="result-wrap">
+        <div class="show_result">
+            <div class="show_result_inner"><img src=""><span></span></div>
+        </div>
+        <div class="show_info">
+            <div class="show_info_inner">
+                <div>确认删除吗？</div>
+                <div>
+                    <button id="confirm">确定</button>
+                    <button id="cancel">取消</button>
+                </div>
+            </div>
+        </div>
+        <div class="result-title">
+            <div class="result-list">
+                <a href="/admin/add"><i class="icon-font"></i>添加管理员</a>
+                <a id="batchDel" href="javascript:;"><i class="icon-font"></i>批量删除</a>
+            </div>
+        </div>
+        <div class="result-content">
+            <table class="result-tab" width="100%">
+                <thead>
+                <tr>
+                    <th class="tc" width="5%"><input type="checkbox" name="selectall" id="selectall"></th>
+                    <th>用户名</th>
+                    <th>联系方式</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="admin">
+                </tbody>
+            </table>
+            <div class="list-page">
+                <button class="list_bottom_info_btn"><span id="count"></span> 条</button>
+                <button class="list_bottom_info_btn">第 <span id="page"></span> 页</button>
+                <button class="list_bottom_info_btn">共 <span id="allpage"></span> 页</button>
+                <button class="list_bottom_info_btn" id="previous">上一页</button>
+                <button class="list_bottom_info_btn" id="next">下一页</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/main-->
+</div>
+
+<!--_footer-->
+<%- include('../footer.html') %>
+<!-- javascripts-->
+<script type="text/javascript" src="/operations/admin.js"></script>
+<script type="text/javascript">
+    "use strict"
+
+    $(function () {
+        admin.list.getAdmin('1', '10')
+
+        //  批量选中的id
+        function choosed() {
+            let id_arr = []
+            $("input[name='admin']:checked").each(function() {
+                id_arr.push(parseInt($(this).val()))
+            })
+            return id_arr
+        }
+
+        //  批量删除
+        $("#batchDel").click( function () {
+            if (choosed().length <= 0) {
+                $('.show_result').css('display', 'flex')
+                $('.show_result_inner > span').html('请选择至少一条数据')
+                $(".show_result_inner > img").attr("src", '/assets/images/onFocus.gif')
+                setTimeout( function () {
+                    $('.show_result').css('display', 'none')
+                }, 1500)
+            } else {
+                $('.show_info').css('display', 'flex')
+                $('#confirm').click( function () {
+                    admin.list.delMoreAdmin(choosed())
+                    $('.show_info').css('display', 'none')
+                })
+                $('#cancel').click( function () {
+                    $('.show_info').css('display', 'none')
+                })
+            }
+        })
+
+        //  全选、全不选
+        $('input[name="selectall"]').click(function(){
+            if($(this).is(':checked')){
+                $('input[name="admin"]').each(function(){
+                    $(this).prop('checked',true)
+                })
+            }else{
+                $('input[name="admin"]').each(function(){
+                    $(this).prop('checked',false)
+                })
+            }
+        })
+
+        //  下一页
+        $('#next').click(function () {
+            admin.list.getAdmin(parseInt(admin.list.indexPage)+1, '10')
+        })
+
+        //  上一页
+        $('#previous').click(function () {
+            admin.list.getAdmin(parseInt(admin.list.indexPage)-1, '10')
+        })
+    })
+</script>
+<script type="text/html" id="admin_list">
+    [% if( list.length > 0 ){ %]
+    [% for( var i=0; i< list.length; i++ ){ %]
+    <tr>
+        <td class="tc"><input name="admin" value="[%= list[i].id %]" type="checkbox" onclick="
+                            let length=$('input[name=\'admin\']:checked').length,
+                            len=$('input[name=\'admin\']').length
+
+                            if (length===len) {
+                            $('input[name=\'selectall\']').prop('checked',true)
+                            }else{
+                            $('input[name=\'selectall\']').prop('checked',false)
+                            }"></td>
+        <td>[%= list[i].username %]</td>
+        <td>[%= list[i].tel %]</td>
+        <td>
+            <a class="link-update" href="/admin/edit?id=[%= list[i].id %]">修改</a>
+            <a class="link-del" href="javascript:;" onclick="
+                                $('.show_info').css('display', 'flex')
+                                $('#confirm').click( function () {
+                                    admin.list.delOneAdmin('[%= list[i].id %]')
+                                    $('.show_info').css('display', 'none')
+                                })
+                                $('#cancel').click( function () {
+                                    $('.show_info').css('display', 'none')
+                                })
+                            ">删除</a>
+        </td>
+    </tr>
+    [% } %]
+    [% } %]
+</script>
+<script type="text/html" id="admin_count">
+    [%= count %]
+</script>
+<script type="text/html" id="admin_page">
+    [%= page %]
+</script>
+<script type="text/html" id="admin_allpage">
+    [%= allPage %]
+</script>
+</body>
+</html>

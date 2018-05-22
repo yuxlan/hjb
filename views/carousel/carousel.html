@@ -1,0 +1,164 @@
+<%- include('../header.html') %>
+            <div class="main-wrap">
+
+                <div class="crumb-wrap">
+                    <div class="crumb-list"><i class="icon-font"></i><a href='/carousel'>首页</a><span class="crumb-step">&gt;</span><span class="crumb-name">轮播图管理</span></div>
+                </div>
+                <div class="result-wrap">
+                    <div class="show_result">
+                        <div class="show_result_inner"><img src=""><span></span></div>
+                    </div>
+                    <div class="show_info">
+                        <div class="show_info_inner">
+                            <div>确认删除吗？</div>
+                            <div>
+                                <button id="confirm">确定</button>
+                                <button id="cancel">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="result-title">
+                            <div class="result-list">
+                                <a href="/carousel/add"><i class="icon-font"></i>添加轮播图</a>
+                                <a id="batchDel" href="javascript:;"><i class="icon-font"></i>批量删除</a>
+                            </div>
+                        </div>
+                        <div class="result-content">
+                            <table class="result-tab" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="tc" width="5%"><input type="checkbox" name="selectall" id="selectall"></th>
+                                        <th>轮播图</th>
+                                        <th>大小</th>
+                                        <th>类型</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="carousel">
+                                </tbody>
+                            </table>
+                            <div class="list-page">
+                                <button class="list_bottom_info_btn"><span id="count"></span> 条</button>
+                                <button class="list_bottom_info_btn">第 <span id="page"></span> 页</button>
+                                <button class="list_bottom_info_btn">共 <span id="allpage"></span> 页</button>
+                                <button class="list_bottom_info_btn" id="previous">上一页</button>
+                                <button class="list_bottom_info_btn" id="next">下一页</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <!--/main-->
+        </div>
+
+        <!--_footer-->
+        <%- include('../footer.html') %>
+        <!-- javascripts-->
+        <script type="text/javascript" src="/operations/carousel.js"></script>
+        <script type="text/javascript">
+            "use strict"
+
+            $(function () {
+                carousel.list.getCarousel('1', '10', '3')
+
+                //  批量选中的id
+                function choosed() {
+                    let id_arr = []
+                    $("input[name='carousel']:checked").each(function() {
+                        id_arr.push(parseInt($(this).val()))
+                    })
+                    return id_arr
+                }
+
+                //  批量删除
+                $("#batchDel").click( function () {
+                    if (choosed().length <= 0) {
+                        $('.show_result').css('display', 'flex')
+                        $('.show_result_inner > span').html('请选择至少一条数据')
+                        $(".show_result_inner > img").attr("src", '/assets/images/onFocus.gif')
+                        setTimeout( function () {
+                            $('.show_result').css('display', 'none')
+                        }, 1500)
+                    } else {
+                        $('.show_info').css('display', 'flex')
+                        $('#confirm').click( function () {
+                            carousel.list.delMoreCarousel(choosed())
+                            $('.show_info').css('display', 'none')
+                        })
+                        $('#cancel').click( function () {
+                            $('.show_info').css('display', 'none')
+                        })
+                    }
+                })
+
+                //  全选、全不选
+                $('input[name="selectall"]').click(function(){
+                    if($(this).is(':checked')){
+                        $('input[name="carousel"]').each(function(){
+                            $(this).prop('checked',true)
+                        })
+                    }else{
+                        $('input[name="carousel"]').each(function(){
+                            $(this).prop('checked',false)
+                        })
+                    }
+                })
+
+                //  下一页
+                $('#next').click(function () {
+                    carousel.list.getCarousel(parseInt(carousel.list.indexPage)+1, '10', '3')
+                })
+
+                //  上一页
+                $('#previous').click(function () {
+                    carousel.list.getCarousel(parseInt(carousel.list.indexPage)-1, '10', '3')
+                })
+            })
+        </script>
+        <script type="text/html" id="carousel_list">
+            [% if( list.length > 0 ){ %]
+                [% for( var i=0; i< list.length; i++ ){ %]
+                    <tr>
+                        <td class="tc"><input name="carousel" value="[%= list[i].id %]" type="checkbox" onclick="
+                            let length=$('input[name=\'carousel\']:checked').length,
+                            len=$('input[name=\'carousel\']').length
+
+                            if (length===len) {
+                            $('input[name=\'selectall\']').prop('checked',true)
+                            }else{
+                            $('input[name=\'selectall\']').prop('checked',false)
+                            }"></td>
+                        <td><img src="[%= list[i].url %]" width="250px"></td>
+                        <th>[%= list[i].width %] * [%= list[i].height %]</th>
+                        [% if( list[i].type === '1' ){ %]
+                            <td>小程序轮播图</td>
+                        [% } else { %]
+                            <td>PC端轮播图</td>
+                        [% } %]
+                        <td>
+                            <a class="link-update" href="/carousel/edit?id=[%= list[i].id %]">修改</a>
+                            <a class="link-del" href="javascript:;" onclick="
+                                $('.show_info').css('display', 'flex')
+                                $('#confirm').click( function () {
+                                    carousel.list.delOneCarousel('[%= list[i].id %]')
+                                    $('.show_info').css('display', 'none')
+                                })
+                                $('#cancel').click( function () {
+                                    $('.show_info').css('display', 'none')
+                                })
+                            ">删除</a>
+                        </td>
+                    </tr>
+                [% } %]
+            [% } %]
+        </script>
+        <script type="text/html" id="carousel_count">
+            [%= count %]
+        </script>
+        <script type="text/html" id="carousel_page">
+            [%= page %]
+        </script>
+        <script type="text/html" id="carousel_allpage">
+            [%= allPage %]
+        </script>
+    </body>
+</html>
